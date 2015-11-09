@@ -1,10 +1,14 @@
 
+var xmax = 1000;
+var ymax = 750;
+var xmin = 0;
+var ymin = 0;
 
 var xpos = 100;
 var ypos = 100;
 var xspeed = 1;
 var yspeed = 0;
-var maxSpeed = 5;
+var maxSpeed = 10;
 
 
 var upPressed = 0;
@@ -33,11 +37,22 @@ function gameLoop()
  
     xpos = xpos + xspeed;
     ypos = ypos + yspeed;
+    
+    if(xpos >= xmax) {
+        xpos = xmax;
+    }
+    if(ypos >= ymax) {
+        ypos = ymax;
+    }
+    if (ypos <= ymin) 
+        ypos = ymin;
+    if (xpos <= xmin)
+        xpos = xmin;
 
 
-
-  document.getElementById('character').style.left = xpos;
-  document.getElementById('character').style.top = ypos;
+  
+    document.getElementById('character').style.left = xpos;
+    document.getElementById('character').style.top = ypos;
 
   
   if (upPressed == 1)
@@ -66,10 +81,12 @@ function keyDown(e)
     upPressed = 1;
   if (code == 40)
     downPressed = 1;
-  if (code == 37)
+  if (code == 37) 
     leftPressed = 1;
-  if (code == 39)
+  if (code == 39) 
     rightPressed = 1;
+    
+  
 }
 
 function keyUp(e)
@@ -83,6 +100,11 @@ function keyUp(e)
     leftPressed = 0;
   if (code == 39)
     rightPressed = 0;
+}
+
+function picSwitch(b)  {
+  var img = document.getElementById("character");
+  img.src = b;
 }
 
 
