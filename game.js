@@ -1,97 +1,89 @@
-var game = { };
 
-var fillCircle = function(x, y, radius)
+
+var xpos = 100;
+var ypos = 100;
+var xspeed = 1;
+var yspeed = 0;
+var maxSpeed = 5;
+
+
+var upPressed = 0;
+var downPressed = 0;
+var leftPressed = 0;
+var rightPressed = 0;
+
+function slowDownX()
 {
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI, false);
-    context.fill();
-};
-
-var clearCircle = function(x, y, radius)
-{
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI, false);
-    context.clip();
-    context.clearRect(x - radius - 1, y - radius - 1,
-                      radius * 2 + 2, radius * 2 + 2);
-};
-
-game.fps = 60;
-
-game.run = (function() {
-    game.player = new Player();
-    var loops = 0, skipTicks = 1000 / Game.fps,
-    maxFrameSkip = 10,
-    nextGameTick = (new Date).getTime();
-  
-    return function {
-    loops = 0;
-    
-    while ((new Date).getTime() > nextGameTick && loops < maxFrameSkip) {
-      game.update();
-      nextGameTick += skipTicks;
-      loops++;
-    }
-    game.draw();
-};
-})();
-
-game.draw = function(interpolation) {
-    game.player.draw(Game.context);
-    this.context.clearCircle(0, 0, 640);
-
-    for (var i=0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.context, interpolation);
-  }
-};
-
-game.update = function() {
-    
-    game.player.update();
-    
+  if (xspeed > 0)
+    xspeed = xspeed - 1;
+  if (xspeed < 0)
+    xspeed = xspeed + 1;
 }
 
-window.addEventListener('keydown', function(event) {
-  switch (event.keyCode) {
-    case 37: // Left
-        game.player.moveLeft();
-    break;
+function slowDownY()
+{
+  if (yspeed > 0)
+    yspeed = yspeed - 1;
+  if (yspeed < 0)
+    yspeed = yspeed + 1;
+}
 
-    case 38: // Up
-        game.player.moveUp();
-    break;
-
-    case 39: // Right
-        game.player.moveRight();
-    break;
-
-    case 40: // Down
-        game.player.moveDown();
-    break;
-    
-    case 65: //A - left
-        game.player.moveLeft();
-    break;
-          
-    case 87: //W - up
-        game.player.moveUp();
-    break;
-          
-    case 68: //D - right
-        game.player.moveRight();
-    break;
-
-    case 83: //S - down
-        game.player.moveDown();
-    break;
-  }
-}, false);
-
-window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
-window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+function gameLoop()
+{
+ 
+    xpos = xpos + xspeed;
+    ypos = ypos + yspeed;
 
 
 
-Game._intervalId = setInterval(Game.run, 0);
+  document.getElementById('character').style.left = xpos;
+  document.getElementById('character').style.top = ypos;
 
-clearInterval(Game._intervalId);
+  
+  if (upPressed == 1)
+    yspeed = Math.max(yspeed - 1,-1*maxSpeed);
+  if (downPressed == 1)
+    yspeed = Math.min(yspeed + 1,1*maxSpeed)
+  if (rightPressed == 1)
+    xspeed = Math.min(xspeed + 1,1*maxSpeed);
+  if (leftPressed == 1)
+    xspeed = Math.max(xspeed - 1,-1*maxSpeed);
+
+  
+  if (upPressed == 0 && downPressed == 0)
+     slowDownY();
+  if (leftPressed == 0 && rightPressed == 0)
+     slowDownX();
+
+ 
+  setTimeout("gameLoop()",10);
+}
+
+function keyDown(e)
+{
+  var code = e.keyCode ? e.keyCode : e.which;
+  if (code == 38)
+    upPressed = 1;
+  if (code == 40)
+    downPressed = 1;
+  if (code == 37)
+    leftPressed = 1;
+  if (code == 39)
+    rightPressed = 1;
+}
+
+function keyUp(e)
+{
+  var code = e.keyCode ? e.keyCode : e.which;
+  if (code == 38)
+    upPressed = 0;
+  if (code == 40)
+    downPressed = 0;
+  if (code == 37)
+    leftPressed = 0;
+  if (code == 39)
+    rightPressed = 0;
+}
+
+
+

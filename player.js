@@ -1,7 +1,10 @@
-function player() {
+function player(Object o) {
     this.x = 0;
     this.y = 0;
 }
+
+
+
 
 player.prototype.draw = function(context, interpolation) {
   context.fillCircle(this.x, this.y + this.velocity * interpolation, 30);
