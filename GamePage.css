@@ -4,4 +4,19 @@
     top:0;
     height: 50px;
     width: 50px;
+    z-index: 100;
+}
+
+#headerOne {
+    font-size: 14px;
+    
+}
+
+#saitama {
+    position: fixed;
+    bottom: 0;
+    left: 1000;
+    width: 100px;
+    height: 100px;
+    z-index: 1;
 }
